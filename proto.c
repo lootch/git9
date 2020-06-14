@@ -231,7 +231,7 @@ dialhttp(Conn *c, char *host, char *port, char *path, char *direction)
 }
 
 int
-dialssh(Conn *c, char *host, char *, char *path, char *direction)
+dialssh(Conn *c, char *host, char *ch, char *path, char *direction)
 {
 	int pid, pfd[2];
 	char cmd[64];

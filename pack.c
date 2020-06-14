@@ -1,6 +1,7 @@
 #include <u.h>
 #include <libc.h>
 #include <ctype.h>
+#include </usr/local/plan9/include/regexp9.h>
 
 #include "git.h"
 
@@ -265,6 +266,7 @@ readvint(char *p, char **pp)
 	return n;
 }
 
+/*
 static int
 hashsearch(Hash *hlist, int nent, Hash h)
 {
@@ -284,6 +286,7 @@ hashsearch(Hash *hlist, int nent, Hash h)
 	}
 	return -1;
 }
+*/
 
 static int
 applydelta(Object *dst, Object *base, char *d, int nd)
@@ -547,7 +550,7 @@ searchindex(Biobuf *f, Hash h)
 	o = 8;
 	/*
 	 * Read the fanout table. The fanout table
-	 * contains 256 entries, corresponsding to
+	 * contains 256 entries, corresponding to
 	 * the first byte of the hash. Each entry
 	 * is a 4 byte big endian integer, containing
 	 * the total number of entries with a leading
@@ -686,13 +689,13 @@ parseauthor(char **str, int *nstr, char **name, vlong *time)
 	
 	if(!regexec(authorpat, buf, m, nelem(m)))
 		sysfatal("invalid author line %s", buf);
-	nm = m[1].ep - m[1].sp;
+	nm = m[1].e.ep - m[1].s.sp;
 	*name = emalloc(nm + 1);
-	memcpy(*name, m[1].sp, nm);
+	memcpy(*name, m[1].s.sp, nm);
 	buf[nm] = 0;
 	
-	nm = m[2].ep - m[2].sp;
-	memcpy(buf, m[2].sp, nm);
+	nm = m[2].e.ep - m[2].s.sp;
+	memcpy(buf, m[2].s.sp, nm);
 	buf[nm] = 0;
 	*time = atoll(buf);
 	return 0;
@@ -785,7 +788,7 @@ parsetree(Object *o)
 }
 
 static void
-parsetag(Object *)
+parsetag(Object *o)
 {
 }
 

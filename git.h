@@ -199,8 +199,10 @@ struct Objset {
 	} while(0)
 
 #define QDIR(qid)	((int)(qid)->path & (0xff))
+/*
 #define isblank(c) \
 	(((c) != '\n') && isspace(c))
+*/
 
 extern Reprog *authorpat;
 extern Objset objcache;

@@ -1,6 +1,9 @@
-</$objtype/mkfile
+</$PLAN9/src/mkhdr
 
-BIN=/$objtype/bin/git
+BIN = $HOME/bin/git
+SYSLIB = $HOME/lib/git
+SYSMAN = $HOME/man
+
 TARG=\
 	conf\
 	fetch\
@@ -36,23 +39,23 @@ OFILES=\
 
 HFILES=git.h
 
-</sys/src/cmd/mkmany
+<$PLAN9/src/mkmany
 
 # Override install target to install rc.
 install:V:
 	mkdir -p $BIN
-	mkdir -p /sys/lib/git
+	mkdir -p $SYSLIB
 	for (i in $TARG)
 		mk $MKFLAGS $i.install
 	for (i in $RC)
 		mk $MKFLAGS $i.rcinstall
-	cp git.1 /sys/man/1/git
-	cp gitfs.4 /sys/man/4/gitfs
-	cp common.rc /sys/lib/git/common.rc
-	mk $MKFLAGS /sys/lib/git/template
+	cp git.1 $SYSMAN/1/git
+	cp gitfs.4 $SYSMAN/4/gitfs
+	cp common.rc $SYSLIB/common.rc
+	mk $MKFLAGS $SYSLIB/template
 
 uninstall:V:
-	rm -rf $BIN /sys/lib/git
+	rm -rf $BIN $SYSLIB
 
 %.c %.h: %.y
 	$YACC $YFLAGS -D1 -d -s $stem $prereq
@@ -68,6 +71,6 @@ uninstall:V:
 	cp $stem $BIN/$stem
 	chmod +x $BIN/$stem
 
-/sys/lib/git/template: template
-	mkdir -p /sys/lib/git/template
-	dircp template /sys/lib/git/template
+$SYSLIB/template: template
+	mkdir -p $SYSLIB/template
+	dircp template $SYSLIB/template

@@ -824,11 +824,11 @@ usage(void)
 {
 	fprint(2, "usage: %s [-d]\n", argv0);
 	fprint(2, "\t-d:	debug\n");
-	exits("usage");
+	threadexitsall("usage");
 }
 
 void
-main(int argc, char **argv)
+threadmain(int argc, char *argv[])
 {
 	gitinit();
 	ARGBEGIN{
@@ -841,6 +841,7 @@ main(int argc, char **argv)
 	username = getuser();
 	branches = emalloc(sizeof(char*));
 	branches[0] = nil;
-	postmountsrv(&gitsrv, nil, "/mnt/git", MCREATE);
-	exits(nil);
+	rfork(RFNOTEG);
+	threadpostmountsrv(&gitsrv, "git", nil, MCREATE);
+	threadexits(nil);
 }
